@@ -3,6 +3,7 @@ import './Content.css';
 import './Hide.css';
 import Auxil from './../Auxil/Auxil.js'
 import { useState, useRef } from 'react';
+import axios from 'axios'
 
 export default function Overlay(props){
     let triggerhidden=null;
@@ -48,10 +49,12 @@ export default function Overlay(props){
                     fileReader.readAsText(e.target.files[0],'UTF-8');
                     //  file is in selectedfile
                     selectedFile.current=e.target.files[0];
-
+                    console.log('drone json', props.droneJsonData);
                     //  json stored in the state
                     fileReader.onload=e=>{
-                        changeSelectedFile(JSON.parse(e.target.result));
+                        let jsonmapdata=JSON.parse(e.target.result);
+                        changeSelectedFile(jsonmapdata);
+                        props.droneJsonData.current=jsonmapdata;
                         // selectedFile=
                     }
                 }} accept='.json'/>

@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 
 import Map from '../Map/Map';
@@ -10,6 +11,7 @@ export default function Layout() {
 
     const mapService = useRef(null);
     const cnn=useRef([0,0]);
+    const droneJsonData=useRef(null);
 
     let [ invisibility, setInvisibility ] = useState('Hide');
 
@@ -19,6 +21,22 @@ export default function Layout() {
         }else
             setInvisibility('');
     };
+
+    let uploadFile=()=>{
+        // const formData=new FormData();
+        // formData.append('data',droneJsonData.current,'dronedata.json');
+        // axios.post('localhost:8000',formData).then(e=>{
+        //     console.log('uploadef')
+        // })
+        console.log(droneJsonData.current)
+        fetch('http://localhost:8000/dronedata/',{
+            method:'POST',
+            headers:{'Content-type':'application/json'},
+            body:JSON.stringify(droneJsonData.current)
+        }).then(()=>{
+            console.log('uploaded')
+        })
+    }
 
     useEffect(() => {
         //initialize only once
@@ -44,7 +62,7 @@ export default function Layout() {
 
     return (
         <div className='layout'>
-            <Overlay invisibility={invisibility} setInvisibility={overlayMonitor} mapService={mapService} />
+            <Overlay droneJsonData={droneJsonData} invisibility={invisibility} setInvisibility={overlayMonitor} mapService={mapService} />
             {/* <UploadOverlay/> */}
             <div className='layout__content_cont'>
                 <div>
@@ -72,8 +90,7 @@ export default function Layout() {
                     </ol>
                 </div>
                 <div>
-                    <button onClick={(e)=>{
-                    }}>
+                    <button onClick={uploadFile}>
                         Upload
                     </button>
                 </div>

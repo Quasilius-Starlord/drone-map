@@ -10,4 +10,4 @@ class DroneDateSerializer(serializers.ModelSerializer):
 class UploadDroneDataSerializer(serializers.ModelSerializer):
     class Meta:
         model=DroneData
-        fields=('name', 'total_flight_time')
+        fields=('name','total_flight_time')

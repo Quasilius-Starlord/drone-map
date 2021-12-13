@@ -2,6 +2,7 @@ In frontend folder
 # npm install react-scripts
 In backend folder
 # pip install restframework
+# pip install django-cors-headers
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
