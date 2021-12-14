@@ -5,6 +5,6 @@ from .views import UploadDroneDataView, DroneDataView
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
+    path('dronedatashow/', DroneDataView.as_view()),
     path('dronedata/',UploadDroneDataView.as_view()),
-    path('', main)
 ]

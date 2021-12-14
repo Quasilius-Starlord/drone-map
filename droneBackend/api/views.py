@@ -19,11 +19,20 @@ class UploadDroneDataView(APIView):
     serializer_class=UploadDroneDataSerializer
     
     def post(self, request):
-        serializer=self.serializer_class(data=request.data)
-        print(request.data)
-        print('efefe')
+        #need to improve this into create() or update() or an other in serializer
+        for data in request.data:
+            e=data.pop('location')
+            data.update(e)
+        
+        serializer=self.serializer_class(data=request.data, many=True)
+        print('efefe',type(request.data[0]))
+        # print(request.data[0])
+        
         if serializer.is_valid():
-            print('nameeeeeeeeeeeee',serializer.data.get('name'))
-            dronedata=DroneData(name=serializer.data.get('name'),total_flight_time=serializer.data.get('total_flight_time'))
-            dronedata.save()
+            print('nameeeeeeeeeeeee',serializer.data)
+            serializer.save()
+            # dronedata=DroneData(name=serializer.data.get('name'),total_flight_time=serializer.data.get('total_flight_time'))
+            # dronedata.save()
+        else:
+            return Response({}, status=status.HTTP_400)
         return Response({}, status=status.HTTP_200_OK)
