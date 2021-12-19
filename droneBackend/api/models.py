@@ -15,11 +15,11 @@ class DroneType(models.Model):
 class PilotData(models.Model):
     id=models.IntegerField(null=False,unique=True,primary_key=True)
     name=models.CharField(max_length=25, default="", unique=False, null=True)
-    address=models.CharField(max_length=25, default="", unique=False, null=True)
-    phone=models.BigIntegerField(null=True,unique=False)
-    experience=models.IntegerField(null=True,unique=False)
-    skill=models.IntegerField(null=True,unique=False)
-    country=models.CharField(max_length=25, default="India", unique=False)
+    address=models.CharField(max_length=50, default="", unique=False, null=True)
+    phone=models.CharField(max_length=15, default="", unique=False, null=True)
+    experience=models.IntegerField(null=False,unique=False,default=0)
+    skill=models.IntegerField(null=False,unique=False,default=0)
+    country=models.CharField(null=False,max_length=25, default="India", unique=False)
 
 class DroneData(models.Model):
     drone_name=models.CharField(max_length=25, default="", unique=False, null=True)
