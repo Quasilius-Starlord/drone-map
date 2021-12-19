@@ -41,7 +41,6 @@ class UploadDroneDataView(APIView):
             if queryset.exists():
                 pass
             else:
-                print('new')
                 dronetypeserializer=DroneTypeSerializer(data=dronetype)
                 if dronetypeserializer.is_valid():
                     dronetypeserializer.save()
@@ -63,25 +62,18 @@ class UploadDroneDataView(APIView):
             queryset=DroneData.objects.filter(reg_id=data['reg_id'])
             if queryset.exists():
                 dronedata=queryset[0]
-                if dronedata.drone_type==NullBooleanField:
+                if dronedata.drone_type==None:
                     dronedata.drone_type=DroneType.objects.get(id=data['drone_type'])
                     dronedata.save(update_fields=['drone_type'])
-                # must add if condition ie not null or not present in database or not
-                print(queryset[0],'pilot data set for each drone')
-                dronedata.pilot=PilotData.objects.get(id=data['pilot'])
-                dronedata.save(update_fields=['pilot'])
+                if dronedata.pilot==None:
+                    dronedata.pilot=PilotData.objects.get(id=data['pilot'])
+                    dronedata.save(update_fields=['pilot'])
             else:
+                print(data, DroneType.objects.get(id=data['drone_type']))
                 serializer=self.serializer_class(data=data)
-                serializer.save()
-        # print('efefe',type(request.data[0]))
-        print(request.data[0],end="\n\n")
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    print('INVALID')
         
-        # if serializer.is_valid():
-        #     pass
-        #     # print('nameeeeeeeeeeeee',serializer.data)
-        #     # serializer.save()
-        # else:
-        #     print('INVALID')
-        #     print('nameeeeeeeeeeeee',serializer.data)
-        #     return Response({}, status=status.HTTP_304_NOT_MODIFIED)
         return Response({}, status=status.HTTP_200_OK)

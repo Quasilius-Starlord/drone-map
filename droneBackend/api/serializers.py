@@ -20,8 +20,8 @@ class PilotDataSerializer(serializers.ModelSerializer):
         fields='__all__'
 
 class UploadDroneDataSerializer(serializers.ModelSerializer):
-    drone_type=DroneTypeSerializer(many=False)
-    pilot=PilotDataSerializer(many=False)
+    # drone_type=DroneTypeSerializer(many=False)
+    # pilot=PilotDataSerializer(many=False)
     class Meta:
         model=DroneData
         fields='__all__'
