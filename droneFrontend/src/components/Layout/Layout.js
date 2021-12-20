@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { ProgressBar } from "react-bootstrap";
+import { Button, ProgressBar } from "react-bootstrap";
+import DroneTable from "../DroneTable/DroneTable";
 
 import Map from '../Map/Map';
 import MapService, { MAPBOX_ACCESS_TOKEN } from '../Map/MapService';
@@ -30,7 +31,7 @@ export default function Layout() {
             setProgressBarVisibility('Hide')
         }else
             setProgressBarVisibility('');
-    }
+    };
 
     let uploadFile=()=>{
         console.log(droneJsonData.current, 'uploaded')
@@ -51,13 +52,6 @@ export default function Layout() {
             // changeUploadedPercent(0);
         })
         return;
-        // fetch('http://localhost:8000/dronedata/',{
-        //     method:'POST',
-        //     headers:{'Content-type':'application/json'},
-        //     body:JSON.stringify(droneJsonData.current)
-        // }).then(()=>{
-        //     console.log('uploaded')
-        // })
     }
 
     useEffect(() => {
@@ -90,44 +84,21 @@ export default function Layout() {
              setProgressBarVisibility={ProgressBarVisibilityMonitor} 
              uploadedPercent={uploadedPercent} />
             <div className='layout__content_cont'>
-                <div>
-                    <p>Instructions:</p>
-                    <button onClick={(e)=>overlayMonitor(e)}>Add drone data</button>
-                    <ol>
-                        <li>Use tool on the top right corner of the map to draw or delete bounding box</li>
-                        <li>
-                            Check "Map" component to understand how to use the helper class and methods. Provided
-                            helpers should be enough to meet the requirements, so you don't have to deal with map
-                            library
-                        </li>
-                        <li>
-                            "MapService" is a helper class which takes care of initializing and other map
-                            relates operations. It contains some private and public methods, you are supposed
-                            to use public methods.
-                        </li>
-                        <li>Refer mapbox documentation if required -
-                            <a target='_blank' rel="noreferrer" href='https://docs.mapbox.com/mapbox-gl-js/api/map/'> mapbox-gl</a>
-                        </li>
-                        <li>Refer mapbox draw tool documentation if required -
-                            <a target='_blank' rel="noreferrer" href='https://github.com/mapbox/mapbox-gl-draw/blob/main/docs/API.md'> mapbox-gl-draw</a>
-                        </li>
-                        <li>Remove or comment example/demo codes</li>
-                    </ol>
-                </div>
-                <div>
-                    <button onClick={uploadFile}>
+                <div style={{padding:'1em',display:'flex', justifyContent:'space-evenly'}}>
+                    <Button variant="success" onClick={(e)=>overlayMonitor(e)}>
+                        Add JSON File
+                    </Button>
+                    <Button variant="success" onClick={uploadFile}>
                         Upload
-                    </button>
+                    </Button>
                 </div>
-
+                <DroneTable drones={droneJsonData}/>
                 <div>
-                    <p>Draw a bounding box on map then click - &nbsp;</p>
                     <button onClick={getBoundingBox}>
                         Get bounding box coordinate
                     </button>
                     <p>Note: Check console for full object</p>
                 </div>
-
             </div>
 
             <div className='layout__map_cont'>

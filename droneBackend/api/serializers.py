@@ -9,6 +9,7 @@ class DroneDateSerializer(serializers.ModelSerializer):
     class Meta:
         model=DroneData
         fields='__all__'
+        # depth=1
 
 class DroneTypeSerializer(serializers.ModelSerializer):
     class Meta:

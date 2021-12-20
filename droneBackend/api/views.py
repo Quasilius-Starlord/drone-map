@@ -31,7 +31,7 @@ class UploadDroneDataView(APIView):
     
     def post(self, request):
         #need to improve this into create() or update() or an other in serializer
-        return Response({}, status=status.HTTP_200_OK)
+        # return Response({}, status=status.HTTP_200_OK)
         droneDataset=json.loads(request.data.get('file'))
         print(droneDataset, type(droneDataset))
         for data in droneDataset:
