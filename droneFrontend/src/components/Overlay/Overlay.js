@@ -14,18 +14,15 @@ export default function Overlay(props){
 
     let processCurrSelected=()=>{
         if(currSelectedFile){
-            const coordinate=currSelectedFile.slice(0,4).map((e, i)=>{
-                return [e.location.latitude, e.location.longitude]
-            })
-            props.mapService.current.addPoints(coordinate);
-            // setTimeout(()=>{
-            //     props.setInvisibility(0);
-            // },5000);
+            // const coordinate=currSelectedFile.slice(0,4).map((e, i)=>{
+            //     return [e.location.latitude, e.location.longitude]
+            // })
+            // props.mapService.current.addPoints(coordinate);
             return(
                 <Auxil>
                     <div>Name: {selectedFile.current.name}</div>
                     <div>Name: {selectedFile.current.type}</div>
-                    {currSelectedFile.slice(0,4).map((ele, i)=>{return (<div key={i}>{`${i+1}. Name ${ele.drone_name} ${ele.location.latitude},${ele.location.longitude}`}</div>)})}
+                    {/* {currSelectedFile.slice(0,4).map((ele, i)=>{return (<div key={i}>{`${i+1}. Name ${ele.drone_name} ${ele.location.latitude},${ele.location.longitude}`}</div>)})} */}
                 </Auxil>
             )
         }else{

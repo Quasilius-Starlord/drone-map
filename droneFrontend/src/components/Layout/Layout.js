@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
+import { ProgressBar } from "react-bootstrap";
 
 import Map from '../Map/Map';
 import MapService, { MAPBOX_ACCESS_TOKEN } from '../Map/MapService';
@@ -14,6 +15,8 @@ export default function Layout() {
     const droneJsonData=useRef(null);
 
     let [ invisibility, setInvisibility ] = useState('Hide');
+    let [ progressBarVisibility, setProgressBarVisibility ] = useState('Hide');
+    let [ uploadedPercent, changeUploadedPercent ] = useState(0);
 
     let overlayMonitor = e => {
         if(!invisibility){
@@ -22,20 +25,39 @@ export default function Layout() {
             setInvisibility('');
     };
 
+    let ProgressBarVisibilityMonitor = e =>{
+        if(!progressBarVisibility){
+            setProgressBarVisibility('Hide')
+        }else
+            setProgressBarVisibility('');
+    }
+
     let uploadFile=()=>{
-        // const formData=new FormData();
-        // formData.append('data',droneJsonData.current,'dronedata.json');
-        // axios.post('localhost:8000',formData).then(e=>{
-        //     console.log('uploadef')
-        // })
-        console.log(droneJsonData.current)
-        fetch('http://localhost:8000/dronedata/',{
-            method:'POST',
-            headers:{'Content-type':'application/json'},
-            body:JSON.stringify(droneJsonData.current)
-        }).then(()=>{
-            console.log('uploaded')
+        console.log(droneJsonData.current, 'uploaded')
+        setProgressBarVisibility();
+        let data=new FormData();
+        data.append('file', JSON.stringify(droneJsonData.current));
+        changeUploadedPercent(0);
+        const options={
+            onUploadProgress: progressEvent=>{
+                let percent=Math.floor((progressEvent.loaded/progressEvent.total)*100);
+                changeUploadedPercent(percent)
+                console.log(progressEvent, uploadedPercent)
+            }
+        }
+
+        axios.post('http://localhost:8000/dronedata/', data, options).then(res=>{
+            // console.log(res);
+            // changeUploadedPercent(0);
         })
+        return;
+        // fetch('http://localhost:8000/dronedata/',{
+        //     method:'POST',
+        //     headers:{'Content-type':'application/json'},
+        //     body:JSON.stringify(droneJsonData.current)
+        // }).then(()=>{
+        //     console.log('uploaded')
+        // })
     }
 
     useEffect(() => {
@@ -63,7 +85,10 @@ export default function Layout() {
     return (
         <div className='layout'>
             <Overlay droneJsonData={droneJsonData} invisibility={invisibility} setInvisibility={overlayMonitor} mapService={mapService} />
-            {/* <UploadOverlay/> */}
+            <UploadOverlay
+             visibility={progressBarVisibility} 
+             setProgressBarVisibility={ProgressBarVisibilityMonitor} 
+             uploadedPercent={uploadedPercent} />
             <div className='layout__content_cont'>
                 <div>
                     <p>Instructions:</p>

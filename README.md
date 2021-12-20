@@ -1,5 +1,6 @@
 In frontend folder
-# npm install react-scripts
+# npm install --save react-scripts
+# npm install react-bootstrap bootstrap@5.1.3
 In backend folder
 # pip install restframework
 # pip install django-cors-headers

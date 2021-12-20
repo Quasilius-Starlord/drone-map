@@ -5,6 +5,7 @@ from rest_framework import serializers
 from .models import DroneData, DroneType, PilotData
 
 class DroneDateSerializer(serializers.ModelSerializer):
+    depth=1
     class Meta:
         model=DroneData
         fields='__all__'

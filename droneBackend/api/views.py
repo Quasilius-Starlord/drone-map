@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import DroneData, DroneType, PilotData
 from .serializers import DroneDateSerializer, UploadDroneDataSerializer, DroneTypeSerializer, PilotDataSerializer
+import json
 
 # Create your views here.
 
@@ -30,7 +31,10 @@ class UploadDroneDataView(APIView):
     
     def post(self, request):
         #need to improve this into create() or update() or an other in serializer
-        for data in request.data:
+        return Response({}, status=status.HTTP_200_OK)
+        droneDataset=json.loads(request.data.get('file'))
+        print(droneDataset, type(droneDataset))
+        for data in droneDataset:
             e=data.pop('location')
             data.update(e)
             
@@ -58,7 +62,7 @@ class UploadDroneDataView(APIView):
             data['pilot']=pilotdata['id']
         
         # entire drone data is updated
-        for data in request.data:
+        for data in droneDataset:
             queryset=DroneData.objects.filter(reg_id=data['reg_id'])
             if queryset.exists():
                 dronedata=queryset[0]
