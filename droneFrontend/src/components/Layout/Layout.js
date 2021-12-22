@@ -80,7 +80,7 @@ export default function Layout() {
         <div className='layout'>
             <Overlay droneJsonData={droneJsonData} invisibility={invisibility} setInvisibility={overlayMonitor} mapService={mapService} />
             <UploadOverlay
-             visibility={progressBarVisibility} 
+             visibility={progressBarVisibility}
              setProgressBarVisibility={ProgressBarVisibilityMonitor} 
              uploadedPercent={uploadedPercent} />
             <div className='layout__content_cont'>

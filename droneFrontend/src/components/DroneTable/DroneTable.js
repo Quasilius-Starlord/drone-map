@@ -15,9 +15,9 @@ export default function DroneTable(props){
             </tr>)
         })
     };
-    if(props.drones){
+    if(props.drones.current){
         return(
-            <div style={{maxHeight:'20rem',overflowY:'scroll'}}>
+            <div style={{maxHeight:'20rem',overflowY:'scroll',scrollbarWidth:'none'}}>
                 <Table variant="dark" style={{height:'100%'}}>
                     <thead>
                         <tr>
