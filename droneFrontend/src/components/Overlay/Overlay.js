@@ -7,23 +7,26 @@ import axios from 'axios'
 
 export default function Overlay(props){
     let triggerhidden=null;
-    const selectedFile=useRef(null);
 
     // const processState=useRef(false);
     const [currSelectedFile, changeSelectedFile]=useState(null);
 
+    if(props.droneJsonData.current){
+        // console.log(props.droneJsonData.current)
+        props.mapService.current.addPoints(props.droneJsonData.current.map(e=>{
+            // console.log(e)
+            return [e.location.latitude, e.location.longitude]
+        }))
+    }
     let processCurrSelected=()=>{
         if(currSelectedFile){
-            // const coordinate=currSelectedFile.slice(0,4).map((e, i)=>{
-            //     return [e.location.latitude, e.location.longitude]
-            // })
-            // props.mapService.current.addPoints(coordinate);
             return(
-                <Auxil>
-                    <div>Name: {selectedFile.current.name}</div>
-                    <div>Name: {selectedFile.current.type}</div>
-                    {/* {currSelectedFile.slice(0,4).map((ele, i)=>{return (<div key={i}>{`${i+1}. Name ${ele.drone_name} ${ele.location.latitude},${ele.location.longitude}`}</div>)})} */}
-                </Auxil>
+                <div>file Selected</div>
+                // <Auxil>
+                //     <div>Name: {selectedFile.current.name}</div>
+                //     <div>Name: {selectedFile.current.type}</div>
+                    // {/* {currSelectedFile.slice(0,4).map((ele, i)=>{return (<div key={i}>{`${i+1}. Name ${ele.drone_name} ${ele.location.latitude},${ele.location.longitude}`}</div>)})} */}
+                // {/* </Auxil> */}
             )
         }else{
             return(
@@ -45,15 +48,15 @@ export default function Overlay(props){
                     const fileReader = new FileReader();
                     fileReader.readAsText(e.target.files[0],'UTF-8');
                     //  file is in selectedfile
-                    selectedFile.current=e.target.files[0];
                     console.log('drone json', props.droneJsonData);
                     //  json stored in the state
                     fileReader.onload=e=>{
                         let jsonmapdata=JSON.parse(e.target.result);
                         changeSelectedFile(jsonmapdata);
                         props.droneJsonData.current=jsonmapdata;
-                        // selectedFile=
+                        props.setInvisibility(triggerhidden);
                     }
+                    e.target.value='';
                 }} accept='.json'/>
                 {processCurrSelected()}
             </div>

@@ -6,8 +6,9 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import DroneData, DroneType, PilotData
-from .serializers import DroneDateSerializer, UploadDroneDataSerializer, DroneTypeSerializer, PilotDataSerializer
+from .serializers import DroneDateSerializer, UploadDroneDataSerializer, DroneTypeSerializer, PilotDataSerializer, LocationDroneDataFetchSerializer, DroneDataMinimalSerializer
 import json
+from shapely.geometry import Point, Polygon
 
 # Create your views here.
 
@@ -81,3 +82,33 @@ class UploadDroneDataView(APIView):
                     print('INVALID')
         
         return Response({}, status=status.HTTP_200_OK)
+
+class LocationDroneDataFetchView(APIView):
+    serializer_class=LocationDroneDataFetchSerializer
+    drone_data_serializer_class=DroneDataMinimalSerializer
+
+    def post(self, request):
+        print(request.data['polygon'])
+        droneData=DroneData.objects.all()
+        polygon=[]
+        for coord in request.data['polygon']:
+            polygon.append((coord[0], coord[1]))
+        polygon=Polygon(polygon)
+        print(polygon)
+        # polygon is for the polygon bounded box
+        validID=[];
+        for drone in droneData:
+            serializer=self.serializer_class(drone)
+            point=Point(serializer.data['latitude'],serializer.data['longitude'])
+            if point.within(polygon):
+                validID.append(serializer.data['reg_id'])
+                pass
+            pass
+        print(validID)
+        dataset=[]
+        droneData=DroneData.objects.filter(reg_id__in=validID)
+        for drone in droneData:
+            serializer=self.drone_data_serializer_class(drone)
+            dataset.append(serializer.data)
+        
+        return Response(json.dumps({'data':dataset}), content_type="application/json", status=status.HTTP_200_OK)
