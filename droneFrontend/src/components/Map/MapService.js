@@ -190,7 +190,7 @@ export default class MapService extends Component {
      */
     addPoints(coordinates) {
         if (!coordinates.length) {
-            return;
+            // return;
         }
 
         const features = [];

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import MapService from './MapService';
 
@@ -6,9 +6,15 @@ import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './Map.css';
 
-export default function Map() {
-
+export default function Map(props) {
     const mapService = useRef(null);
+    if(mapService.current){
+        if(props.drones.current){
+            mapService.current.addPoints(props.drones.current.map(e=>{
+                return [e.location.latitude, e.location.longitude]
+            }))
+        }
+    }
 
     useEffect(() => {
         // initialize only once
@@ -18,6 +24,7 @@ export default function Map() {
         const mapObj = new MapService();
         mapObj.initMap();
         mapService.current = mapObj;
+        
 
         // mapService.current.addPoints([10,10])
         

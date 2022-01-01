@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.deletion import PROTECT
+from django.db.models.deletion import CASCADE, PROTECT
 
 # Create your models here.
 
@@ -29,5 +29,5 @@ class DroneData(models.Model):
     total_flight_time_min=models.IntegerField(null=False, default=0)
     latitude=models.FloatField(null=False, default=0)
     longitude=models.FloatField(null=False, default=0)
-    drone_type=models.ForeignKey(DroneType,on_delete=PROTECT, null=True)
-    pilot=models.ForeignKey(PilotData,on_delete=PROTECT, null=True)
+    drone_type=models.ForeignKey(DroneType,on_delete=CASCADE, null=True)
+    pilot=models.ForeignKey(PilotData,on_delete=CASCADE, null=True)

@@ -13,6 +13,7 @@ export default function Layout() {
 
     const mapService = useRef(null);
     const cnn=useRef([0,0]);
+    const [elementDeleted,setElementDeleted]=useState(0);
     const droneJsonData=useRef(null);
 
     // const newdata=useRef([
@@ -193,7 +194,7 @@ export default function Layout() {
                         Upload
                     </Button>
                 </div>
-                <DroneTable drones={droneJsonData}/>
+                <DroneTable drones={droneJsonData} elementDeleted={elementDeleted} setElementDeleted={setElementDeleted} />
                 
                 <button onClick={()=>{
                     console.log(droneJsonData)
@@ -206,10 +207,13 @@ export default function Layout() {
                     </button>
                     <p>Note: Check console for full object</p>
                 </div>
+                <div>
+                    download sample data <a href="./../../assets/data/active_directory_drones.json" download>here</a>
+                </div>
             </div>
 
             <div className='layout__map_cont'>
-                {MAPBOX_ACCESS_TOKEN && <Map />}
+                {MAPBOX_ACCESS_TOKEN && <Map drones={droneJsonData} />}
             </div>
 
         </div>

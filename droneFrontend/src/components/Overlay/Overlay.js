@@ -11,13 +11,6 @@ export default function Overlay(props){
     // const processState=useRef(false);
     const [currSelectedFile, changeSelectedFile]=useState(null);
 
-    if(props.droneJsonData.current){
-        // console.log(props.droneJsonData.current)
-        props.mapService.current.addPoints(props.droneJsonData.current.map(e=>{
-            // console.log(e)
-            return [e.location.latitude, e.location.longitude]
-        }))
-    }
     let processCurrSelected=()=>{
         if(currSelectedFile){
             return(
