@@ -1,3 +1,4 @@
+from django.db.models import query
 from django.db.models.fields import NullBooleanField
 from django.db.models.query import QuerySet
 from django.shortcuts import render
@@ -16,8 +17,41 @@ def main(request):
     return HttpResponse("firddd")
 
 class DroneDataView(generics.ListCreateAPIView):
-    queryset=DroneData.objects.all()
+    queryset=DroneData.objects.order_by('last_seen').all()
     serializer_class=DroneDateSerializer
+
+class FetchDroneDataByID(generics.ListCreateAPIView):
+    serializer_class=DroneDateSerializer
+    def list(self, request, ID):
+        print(ID)
+        try:
+            queryset=DroneData.objects.get(reg_id=ID)
+            serializer=self.serializer_class(queryset)
+            print(serializer.data)
+            return Response(serializer.data)
+        except:
+            return Response({})
+
+class FetchDroneDataByType(generics.ListCreateAPIView):
+    serializer_class=DroneDateSerializer
+    def list(self, request, Type):
+        print(Type)
+        try:
+            queryset=DroneType.objects.get(model_name=Type)
+            serialiser=DroneTypeSerializer(queryset)
+            typeId=serialiser.data['id']
+            queryset=DroneData.objects.filter(drone_type=typeId)
+            if queryset.exists():
+                serialiser=DroneDateSerializer(queryset, many=True)
+                return Response(serialiser.data)
+            else:
+                raise Exception('error')
+        except :
+            return Response({})
+
+    def get_queryset(self):
+        print(self.request)
+        return DroneData.objects.all()
 
 class DroneTypeView(generics.ListCreateAPIView):
     queryset=DroneType.objects.all()
