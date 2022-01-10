@@ -367,7 +367,11 @@ export default function Layout() {
                         Upload
                     </Button>
                 </div>
-                <DroneTable drones={droneJsonData} elementDeleted={elementDeleted} setElementDeleted={setElementDeleted} />
+                <DroneTable
+                 drones={droneJsonData} 
+                 elementDeleted={elementDeleted} 
+                 setElementDeleted={setElementDeleted}
+                 itemsPerPage={4} />
 
                 <button onClick={() => {
                     console.log(droneJsonData)

@@ -11,7 +11,6 @@ from .serializers import DroneDateSerializer, UploadDroneDataSerializer, DroneTy
 import json
 from shapely.geometry import Point, Polygon
 
-# Create your views here.
 
 def main(request):
     return HttpResponse("firddd")
