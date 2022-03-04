@@ -10,16 +10,15 @@ export default function Overlay(props){
 
     // const processState=useRef(false);
     const [currSelectedFile, changeSelectedFile]=useState(null);
-
+    const selectedFileName = useRef('')
     let processCurrSelected=()=>{
         if(currSelectedFile){
             return(
-                <div>file Selected</div>
-                // <Auxil>
-                //     <div>Name: {selectedFile.current.name}</div>
-                //     <div>Name: {selectedFile.current.type}</div>
-                    // {/* {currSelectedFile.slice(0,4).map((ele, i)=>{return (<div key={i}>{`${i+1}. Name ${ele.drone_name} ${ele.location.latitude},${ele.location.longitude}`}</div>)})} */}
-                // {/* </Auxil> */}
+                <Auxil>
+                    <div style={{fontSize:'2em', fontFamily:['Cinzel', 'serif']}}>File Selected</div>
+                    <div style={{fontSize:'1.5em', fontFamily:['Cinzel', 'serif']}}>Name: {selectedFileName.current}</div>
+                    {/* {currSelectedFile.slice(0,4).map((ele, i)=>{return (<div key={i}>{`${i+1}. Name ${ele.drone_name} ${ele.location.latitude},${ele.location.longitude}`}</div>)})} */}
+                </Auxil>
             )
         }else{
             return(
@@ -27,19 +26,20 @@ export default function Overlay(props){
             )
         }
     }
-
+    console.log(props.invisibility)
     return(
-        <div className={`Background ${props.invisibility}`}
+        <div className={ props.invisibility==='Hide' ? props.invisibility : `Background`}
          onClick={e=>{
             if(triggerhidden===e.target)
                 props.setInvisibility(e);
          }}
          ref={node=>{triggerhidden=node}} >
-            <div className={`Content`}>
-                Content
-                <input type='file' onChange={e=>{
+            <div className={`Content`} style={{display:'flex',flexDirection:'column',justifyContent:'space-evenly',alignItems:'center'}}>
+                <input className='form-control' style={{width:'70%',fontFamily:['Cinzel', 'serif']}} type='file' onChange={e=>{
                     const fileReader = new FileReader();
                     fileReader.readAsText(e.target.files[0],'UTF-8');
+                    selectedFileName.current=`${e.target.files[0].name}`
+                    console.log(e.target.files[0].name)
                     //  file is in selectedfile
                     console.log('drone json', props.droneJsonData);
                     //  json stored in the state

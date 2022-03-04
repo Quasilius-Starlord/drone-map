@@ -8,13 +8,13 @@ import MapService, { MAPBOX_ACCESS_TOKEN } from '../Map/MapService';
 import Overlay from "../Overlay/Overlay";
 import UploadOverlay from "../UploadOverlay/UploadOverlay";
 import './Layout.css';
+import { URL } from './../../assets/backend/server'
 
 export default function Layout() {
-
+    console.log(URL)
     const mapService = useRef(null);
-    //const cnn = useRef([0, 0]);
-    const [elementDeleted, setElementDeleted] = useState(0);
     const droneJsonData = useRef(null);
+    
 
     const newdata = useRef([
         {
@@ -311,9 +311,8 @@ export default function Layout() {
             }
         }
 
-        axios.post('http://localhost:8000/dronedata/', data, options).then(res => {
-            // console.log(res);
-            // changeUploadedPercent(0);
+        axios.post(`${URL}/dronedata/`, data, options).then(res => {
+            console.log(res);
         })
         return;
     }
@@ -337,7 +336,7 @@ export default function Layout() {
             return;
         }
         console.log(bbox.geometry.coordinates[0]);
-        fetch('http://localhost:8000/locationfetch/', {
+        fetch(`${URL}/locationfetch/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -350,7 +349,7 @@ export default function Layout() {
             alert(JSON.parse(res).data)
         })
     }
-
+    console.log(URL)
     return (
         <div className='layout'>
             <Overlay droneJsonData={droneJsonData} invisibility={invisibility} setInvisibility={overlayMonitor} mapService={mapService} />
@@ -368,25 +367,18 @@ export default function Layout() {
                     </Button>
                 </div>
                 <DroneTable
-                 drones={droneJsonData} 
-                 elementDeleted={elementDeleted} 
-                 setElementDeleted={setElementDeleted}
+                 drones={droneJsonData}
                  itemsPerPage={4} />
 
-                <button onClick={() => {
-                    console.log(droneJsonData)
-                }}>
-                    print
-                </button>
-                <div>
-                    <button onClick={getBoundingBox}>
+                
+                <div style={{display:"flex",justifyContent:'center'}}>
+                    <Button variant="info" onClick={getBoundingBox}>
                         Get drone in bounded Box
-                    </button>
-                    <p>Note: Check console for full object</p>
+                    </Button>
                 </div>
-                <div>
-                    download sample data <a href="./../../assets/data/active_directory_drones.json" download>here</a>
-                </div>
+                <p style={{fontFamily:['Cinzel', 'serif'], textAlign:'center', marginTop:'10px'}}>
+                    download sample data <a href="./../../assets/data/largetestdataforupload.json" download>here</a>
+                </p>
             </div>
 
             <div className='layout__map_cont'>

@@ -4,7 +4,7 @@ import mapboxgl, { Map } from 'mapbox-gl';
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
 import MarkerImage from '../../assets/images/marker.png';
-import data from './../../assets/data/active_directory_drones.json';
+import data from './../../assets/data/largetestdataforupload.json';
 
 // NOTE: Add you mapbox token here
 export const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1Ijoic2luLXNpbmF0cmEiLCJhIjoiY2t3cDI2MjdrMDhrNzJ2cDNkMW95b2E0cSJ9.sRbQfiDOUET9TL5HLNR0GQ'

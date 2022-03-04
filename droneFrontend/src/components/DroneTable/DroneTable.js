@@ -1,7 +1,7 @@
 import { Table } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Auxil from '../Auxil/Auxil';
 import Row from '../Row/Row';
 
@@ -13,6 +13,7 @@ export default function DroneTable(props) {
     const startOffset=currentPage*props.itemsPerPage;
     const endOffset=startOffset+props.itemsPerPage;
     console.log(startOffset,endOffset);
+    const oglength=useRef(props.drones.current ? props.drones.current.length : 0);
 
     let deletevalue = (index) => {
         console.log('at index', index)
@@ -29,6 +30,7 @@ export default function DroneTable(props) {
                 return null;
             
         }).filter(e => e!==null );
+        oglength.current=rowOfItems.length;
     };
     console.log(rowOfItems);
     let droneDataSerializer = () => {
@@ -36,6 +38,7 @@ export default function DroneTable(props) {
             return null;
         return rowOfItems.map((e,i) => <Row
                                          rowData={e}
+                                         key={i}
                                          deletevalue={deletevalue} 
                                          invisibilityClass={ (i>=startOffset && i<endOffset) ? '' : 'Hide' } />);
     };
@@ -48,9 +51,9 @@ export default function DroneTable(props) {
             return null;
         return (
             <Auxil>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <input type={'text'} placeholder='Drone Name' value={nameFilter} onChange={e => setNameFilter(e.target.value)} />
-                    <input type={'text'} placeholder='Drone Brand' value={brandFilter} onChange={e => setBrandFilter(e.target.value)} />
+                <div style={{ display: 'flex', flexDirection: 'row',justifyContent:'space-evenly', alignItems: 'center',flexWrap:'wrap' }}>
+                    <input className='mb-3' type={'text'} placeholder='Drone Name' value={nameFilter} onChange={e => setNameFilter(e.target.value)} />
+                    <input className='mb-3' type={'text'} placeholder='Drone Brand' value={brandFilter} onChange={e => setBrandFilter(e.target.value)} />
                 </div>
                 <div style={{ maxHeight: '20rem', overflowY: 'scroll', scrollbarWidth: 'none' }}>
                     <Table variant="dark" style={{ height: '100%' }}>
@@ -81,12 +84,11 @@ export default function DroneTable(props) {
                     breakClassName={'page-item'}
                     previousClassName={'page-item'}
                     containerClassName='pagination'
-                    pageCount={Math.ceil(props.drones.current.length/props.itemsPerPage)}
+                    pageCount={Math.ceil(oglength.current/props.itemsPerPage)}
                     nextLabel={'next'}
                     previousLabel={'previous'}
                     onPageChange={pageChange}
                 />
-                <div>Element Deleted : {props.elementDeleted}</div>
             </Auxil>
         )
     } else {

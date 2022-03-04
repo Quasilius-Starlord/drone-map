@@ -9,7 +9,7 @@ export default function UploadOverlay(props){
     let uploadedBarLabel=props.uploadedPercent<100 ? `${props.uploadedPercent}%` : 'Upload Complete';
 
     return(
-        <div className={`Background ${props.visibility}`} ref={ node=>triggerhidden=node } onClick={e=>{
+        <div className={ props.visibility==='Hide' ? props.visibility : `Background`} ref={ node=>triggerhidden=node } onClick={e=>{
             if(triggerhidden===e.target){
                 console.log('hide now')
                 props.setProgressBarVisibility();
